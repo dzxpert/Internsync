@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InternSync | Student Signup</title>
+  <!--favicon-->
+  <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png">
+
+  <!--plugins-->
+  <link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="assets/plugins/metismenu/metisMenu.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/plugins/metismenu/mm-vertical.css">
+  <!--bootstrap css-->
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons+Outlined" rel="stylesheet">
+  <!--main css-->
+  <link href="assets/css/bootstrap-extended.css" rel="stylesheet">
+  <link href="sass/main.css" rel="stylesheet">
+  <link href="sass/dark-theme.css" rel="stylesheet">
+  <link href="sass/responsive.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!--authentication-->
+
+  <div class="section-authentication-cover">
+    <div class="">
+      <div class="row g-0">
+
+        <div class="col-12 col-xl-7 col-xxl-8 auth-cover-left align-items-center justify-content-center d-none d-xl-flex border-end">
+
+          <div class="card rounded-0 mb-0 border-0 shadow-none bg-transparent">
+            <div class="card-body">
+              <img src="assets/images/auth/register1.png" class="img-fluid auth-img-cover-login" width="650" alt="">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-12 col-xl-5 col-xxl-4 auth-cover-right align-items-center justify-content-center">
+          <div class="card rounded-0 m-3 border-0 shadow-none">
+            <div class="card-body p-sm-5">
+              <img src="assets/images/logo1.png" class="mb-4" width="145" alt="">
+              <h4 class="fw-bold">Student Signup</h4>
+              <p class="mb-0">Enter your credentials to create your account</p>
+              
+              <!-- Alert container -->
+              <div id="alertContainer"></div>
+              
+              <div class="form-body mt-4">
+                <form id="registerForm" class="row g-3">
+                  <div class="col-md-6">
+                    <label for="inputFirstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="inputFirstName" name="fname" required placeholder="First Name">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputLastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="inputLastName" name="lname" required placeholder="Last Name">
+                  </div>
+                  <div class="col-12">
+                    <label for="inputStudentID" class="form-label">Student ID</label>
+                    <input type="phone" class="form-control" id="inputStudentID" name="studentId" required placeholder="Student ID">
+                  </div>
+                  <div class="col-12">
+                    <label for="inputEmailAddress" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="inputEmailAddress" name="email" required placeholder="example@user.com">
+                    <div id="emailFeedback" class="invalid-feedback" style="display:none;">Email is already in use.</div>
+                  </div>
+                  <div class="col-12">
+                    <label for="inputChoosePassword" class="form-label">Password</label>
+                    <div class="input-group" id="show_hide_password">
+                      <input type="password" class="form-control" id="inputChoosePassword" name="password" required value="12345678" placeholder="Enter Password">
+                       <a href="javascript:;" class="input-group-text bg-transparent"><i class="bi bi-eye-slash-fill"></i></a>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputDep" class="form-label">Department</label>
+                    <select class="form-select" id="departmentSelect" aria-label="Department" required>
+                      <option selected="">Select Department</option>
+                      {{#each departements}}
+                      <option value="{{this.dep_id}}">{{this.name}}</option>
+                      {{/each}}
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputLevel" class="form-label">Level</label>
+                    <select class="form-select" id="levelSelect" name="level" aria-label="Level" required>
+                      <option selected="">Select Level</option>
+                      <option value="1">Bachelor's Degree (License 3)</option>
+                      <option value="2">Master's Degree (Master 2)</option>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label for="inputSpec" class="form-label" >Specialty</label>
+                    <select class="form-select" id="specialtySelect" name="speciality" aria-label="Specialty" required>
+                      <option selected="">Select Specialty</option>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                      <label class="form-check-label" for="flexSwitchCheckChecked">I read and agree to Terms &amp; Conditions</label>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="d-grid">
+                      <button type="button" id="registerBtn" class="btn btn-primary">Register</button>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="text-start">
+                      <p class="mb-0">Already have an account? <a href="/student/login">Sign in here</a></p>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+          </div>
+          </div>
+        </div>
+
+      </div>
+      <!--end row-->
+    </div>
+  </div>
+
+  <script src="assets/js/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Event listener for register button click
+      $('#registerBtn').on('click', function() {
+        // Serialize form data
+        var formData = {
+          fname: $('#inputFirstName').val(),
+          lname: $('#inputLastName').val(),
+          email: $('#inputEmailAddress').val(),
+          password: $('#inputChoosePassword').val(),
+          studentId: $('#inputStudentID').val(),
+          level: $('#levelSelect').val(),
+          speciality: $('#specialtySelect').val()
+        };
+
+        // Send AJAX request to register route
+        $.ajax({
+          url: '/register',
+          type: 'POST',
+          data: formData,
+          success: function(response) {
+            // Show success alert
+            showAlert('Account Created Successfully! Redirecting to login page...', 'success');
+
+            // Redirect to login page after 3 seconds
+            setTimeout(function() {
+              window.location.href = '/student/login';
+            }, 3000);
+          },
+          error: function(xhr, status, error) {
+            var errorMessage = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'Registration failed. Please try again.';
+            console.error('Error registering:', errorMessage);
+            showAlert(errorMessage, 'danger');
+          }
+        });
+      });
+
+      // Function to show alert
+      function showAlert(message, type) {
+        var alertHtml = '<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' +
+                        message +
+                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                        '</div>';
+        $('#alertContainer').html(alertHtml);
+
+        // Auto-hide the alert after 5 seconds
+        setTimeout(function() {
+          $('.alert').alert('close');
+        }, 5000);
+      }
+
+      // Event listener for email input blur
+      $('#inputEmailAddress').on('blur', function() {
+        var email = $(this).val();
+
+        // Send AJAX request to check if email already exists
+        $.ajax({
+          url: '/api/check-email',
+          type: 'GET',
+          data: { email: email },
+          success: function(response) {
+            if (response.exists) {
+              $('#inputEmailAddress').addClass('is-invalid');
+              $('#emailFeedback').show();
+            } else {
+              $('#inputEmailAddress').removeClass('is-invalid');
+              $('#emailFeedback').hide();
+            }
+          },
+          error: function(xhr, status, error) {
+            console.error('Error checking email:', error);
+          }
+        });
+      });
+
+      $("#show_hide_password a").on('click', function(event) {
+        event.preventDefault();
+        if ($('#show_hide_password input').attr("type") == "text") {
+          $('#show_hide_password input').attr('type', 'password');
+          $('#show_hide_password i').addClass("bi-eye-slash-fill");
+          $('#show_hide_password i').removeClass("bi-eye-fill");
+        } else if ($('#show_hide_password input').attr("type") == "password") {
+          $('#show_hide_password input').attr('type', 'text');
+          $('#show_hide_password i').removeClass("bi-eye-slash-fill");
+          $('#show_hide_password i').addClass("bi-eye-fill");
+        }
+      });
+
+      // Function to populate specialties based on selected level and department
+      function populateSpecialties(level, department) {
+        $.ajax({
+          url: '/api/specialties',
+          type: 'GET',
+          data: { level: level, department: department },
+          success: function(response) {
+            const specialtySelect = $('#specialtySelect');
+            specialtySelect.empty().append('<option value="">Select Specialty</option>');
+            if (response.error) {
+              console.error('Error fetching specialties:', response.error);
+              return;
+            }
+            response.specialties.forEach(specialty => {
+              specialtySelect.append('<option value="' + specialty.specialty_id + '">' + specialty.name + '</option>');
+            });
+          },
+          error: function(xhr, status, error) {
+            console.error('Error fetching specialties:', error);
+          }
+        });
+      }
+
+      // Event listener for department select change
+      $('#departmentSelect').on('change', function() {
+        const level = $('#levelSelect').val();
+        const department = $(this).val();
+        if (level && department) {
+          populateSpecialties(level, department);
+        }
+      });
+
+      // Event listener for level select change
+      $('#levelSelect').on('change', function() {
+        const level = $(this).val();
+        const department = $('#departmentSelect').val();
+        if (level && department) {
+          populateSpecialties(level, department);
+        }
+      });
+
+      // Populate specialties initially when the page loads
+      const defaultLevel = $('#levelSelect').val();
+      const defaultDepartment = $('#departmentSelect').val();
+      if (defaultLevel && defaultDepartment) {
+        populateSpecialties(defaultLevel, defaultDepartment);
+      }
+    });
+  </script>
+</body>
+
+</html>
